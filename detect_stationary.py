@@ -1,4 +1,8 @@
-import winsound
+# conda create -n surveillance python=3.9
+# conda activate surveillance
+# pip install ultralytics opencv-python numpy
+
+
 from ultralytics import YOLO
 import cv2
 import numpy as np
