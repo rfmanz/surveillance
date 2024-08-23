@@ -43,19 +43,10 @@ try:
                         if object_tracker[object_id] > 3 and object_id not in object_notified:
                             subprocess.run(["telegram-send", f"{CLASSES[cls]} detected"])
                             object_notified.add(object_id)
-                            cv2.rectangle(frame, (b[0], b[1]), (b[2], b[3]), (0, 0, 255), 2)
                     else:
                         object_tracker[object_id] = 1
 
-                    color = (0, 0, 255) if object_id in object_notified else (0, 255, 0)
-                    cv2.rectangle(frame, (b[0], b[1]), (b[2], b[3]), color, 2)
-                    label = f"{CLASSES[cls]}: {object_tracker[object_id]}"
-                    cv2.putText(frame, label, (b[0], b[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
-
-        cv2.imshow('Live Detection', frame)
-
-        key = cv2.waitKey(5)
-        if key == 27:
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
 except KeyboardInterrupt:
