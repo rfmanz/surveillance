@@ -4,7 +4,7 @@ import numpy as np
 import telegram_send
 import subprocess
 
-src = "E:/sample.mp4"
+src = "sample.mp4"
 
 model = YOLO('yolov8n.pt')
 
