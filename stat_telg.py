@@ -46,6 +46,14 @@ try:
                     else:
                         object_tracker[object_id] = 1
 
+                    # Draw bounding box and label
+                    cv2.rectangle(frame, (b[0], b[1]), (b[2], b[3]), (0, 255, 0), 2)
+                    label = f"{CLASSES[cls]}: {object_tracker[object_id]}"
+                    cv2.putText(frame, label, (b[0], b[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
+        # Display the frame
+        cv2.imshow('Live Detection', frame)
+
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
