@@ -1,3 +1,6 @@
+# telegram-send --configure
+#7087177667:AAE1zWAQrKS7BpRqw-duq0x1lh-CrxDK8v8
+
 from ultralytics import YOLO
 import cv2
 import numpy as np
@@ -54,8 +57,9 @@ try:
         # Display the frame
         cv2.imshow('Live Detection', frame)
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(5) & 0xFF == ord('q'):
             break
+    
 
 except KeyboardInterrupt:
     print("Interrupted by user")
