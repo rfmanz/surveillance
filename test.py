@@ -1,13 +1,25 @@
 import cv2
 import subprocess
+import tarfile
+import os
 from deepsparse import Pipeline
 
-# Replace 'yolov8n.onnx' with your fine-tuned model's stub
-# Example: stub = "zoo:yolov8-finetuned_custom_model"
-stub = "zoo:yolov8-finetuned_custom_model"
+# Path to the compressed model file
+compressed_model_path = "model.onnx.tar.gz"
 
-# Create a YOLOv8 pipeline using the fine-tuned model stub
-yolo_pipeline = Pipeline.create(task='yolov8', model_path=stub)
+# Path where the model will be extracted
+extracted_model_dir = "extracted_model"
+extracted_model_path = os.path.join(extracted_model_dir, "model.onnx")
+
+# Extract the model if it hasn't been extracted already
+if not os.path.exists(extracted_model_path):
+    os.makedirs(extracted_model_dir, exist_ok=True)
+    with tarfile.open(compressed_model_path, "r:gz") as tar:
+        tar.extractall(path=extracted_model_dir)
+    print(f"Model extracted to {extracted_model_dir}")
+
+# Create a YOLOv8 pipeline using the extracted model
+yolo_pipeline = Pipeline.create(task='yolov8', model_path=extracted_model_path)
 
 src = "sample.mp4"
 cap = cv2.VideoCapture(src)
