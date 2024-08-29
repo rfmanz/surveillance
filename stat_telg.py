@@ -1,5 +1,4 @@
 # telegram-send --configure
-#7087177667:AAE1zWAQrKS7BpRqw-duq0x1lh-CrxDK8v8
 
 from ultralytics import YOLO
 import cv2
