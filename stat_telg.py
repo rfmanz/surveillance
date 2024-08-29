@@ -1,9 +1,6 @@
 # telegram-send --configure
-
 from ultralytics import YOLO
 import cv2
-import numpy as np
-import telegram_send
 import subprocess
 
 src = "sample.mp4"
