@@ -2,7 +2,7 @@ import cv2
 import subprocess
 from deepsparse import Pipeline
 
-src = "sample.mp4"
+src = "night.mp4"
 model_path = "yolov8n.onnx"
 yolo_pipeline = Pipeline.create(task='yolov8', model_path=model_path)
 
