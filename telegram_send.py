@@ -1,9 +1,9 @@
+# telegram-send --configure
 from ultralytics import YOLO
 import cv2
-import numpy as np
+import subprocess
 
-# src = "E:/sample.mp4"
-src = "rtsp://admin:Hik12345@192.168.1.64:554/Streaming/Channels/101"
+src = "sample.mp4"
 
 model = YOLO('yolov8n.pt')
 
@@ -12,6 +12,7 @@ cap = cv2.VideoCapture(src)
 TARGET_CLASSES = [0, 2, 3, 5, 7]
 
 object_tracker = {}
+object_notified = set()
 CLASSES = {
     0: 'person', 2: 'car', 3: 'motorcycle', 5: 'bus', 7: 'truck'
 }
@@ -38,21 +39,23 @@ try:
                     
                     if object_id in object_tracker:
                         object_tracker[object_id] += 1
-                        if object_tracker[object_id] > 3:                            
-                            cv2.rectangle(frame, (b[0], b[1]), (b[2], b[3]), (0, 0, 255), 2)
-
+                        if object_tracker[object_id] > 3 and object_id not in object_notified:
+                            subprocess.run(["telegram-send", f"{CLASSES[cls]} detected"])
+                            object_notified.add(object_id)
                     else:
                         object_tracker[object_id] = 1
 
+                    # Draw bounding box and label
                     cv2.rectangle(frame, (b[0], b[1]), (b[2], b[3]), (0, 255, 0), 2)
                     label = f"{CLASSES[cls]}: {object_tracker[object_id]}"
                     cv2.putText(frame, label, (b[0], b[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
+        # Display the frame
         cv2.imshow('Live Detection', frame)
 
-        key = cv2.waitKey(5)
-        if key == 27:
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+    
 
 except KeyboardInterrupt:
     print("Interrupted by user")
